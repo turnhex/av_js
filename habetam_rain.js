@@ -1,13 +1,21 @@
+//cash out button =  document.getElementsByClassName("btn btn-warning cashout ng-star-inserted")[1].click()
+
+//document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
+
 let globalList = []
 	
 let autoBetPattern = {
 	'win':[
+		['winn', 1,1,5],
+		['winn', 1,1,1,1],
 		
 	],
 	'faild':[
 		['winn', 1,2,3]
 	]
 }
+
+
 
 
 function winnPattern(){
@@ -46,6 +54,22 @@ function faildPattern(){
 	return pattern
 }
 
+function autoBetPatternFinder(){
+	const betsList = document.querySelector(".bets-list");
+	
+	
+	winP = autoBetPattern['win'];
+	faildP = autoBetPattern['faild'];
+	
+	currentGPattern = winnPattern().slice(0, 4)
+	for(let w=0; w<winP.length; w++){
+		win = winP[w].slice(1, winP[w].length);
+		if(currentGPattern.toString() == win.toString()){
+			
+			betsList.innerHTML += `Winn Pattern Found : ${win}`
+		}
+	}
+}
 function lastProcess(){
 	console.clear()
 	const betsList = document.querySelector(".bets-list");
@@ -64,17 +88,20 @@ function lastProcess(){
 	let winnp  = winnPattern()
 	let faildp = faildPattern()
 	
-	betsList.innerHTML += String(winnp)
+	betsList.innerHTML += "<br>"
+	
 	
 	last13resultWinn = winnp.slice(0, 3)
 	last13resultFaild = faildp.slice(0, 3)
 	
 	stringHtml = `<div>
-		Winn = <b style="color:green">${last13resultWinn}</b> <b style="color:gray">${winnp.slice(3, 6)}</b><br>
-		Faild = <b style="color:red">${last13resultFaild}</b> <b style="color:gray">${faildp.slice(3, 6)}<br>
+		Winn = <b style="color:green">${last13resultWinn}</b> <b style="color:gray">${winnp.slice(3, 6)}</b> <b style="color:gray">${winnp.slice(7, 10)}</b><br>
+		Faild = <b style="color:red">${last13resultFaild}</b> <b style="color:gray">${faildp.slice(3, 6)}</b> <b style="color:gray">${faildp.slice(7, 10)}<br>
 		
 	</div>`
 	betsList.innerHTML += stringHtml
+	
+	autoBetPatternFinder()
 }
 
 // Select the target node
