@@ -1,21 +1,22 @@
 //cash out button =  document.getElementsByClassName("btn btn-warning cashout ng-star-inserted")[1].click()
 
 //document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
+//document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
+//rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
+
+
 
 let globalList = []
+
+let betPatternWinn = [
+[2,2,1,1,1,1,1],
+[2,1,2,1,1,2,2,2],
+
+]
+let betPatternWinnWaring = [
+	[2,1,1,3],
 	
-let autoBetPattern = {
-	'win':[
-		['winn', 1,1,5],
-		['winn', 1,1,1,1],
-		
-	],
-	'faild':[
-		['winn', 1,2,3]
-	]
-}
-
-
+]
 
 
 function winnPattern(){
@@ -57,19 +58,59 @@ function faildPattern(){
 function autoBetPatternFinder(){
 	const betsList = document.querySelector(".bets-list");
 	
-	
-	winP = autoBetPattern['win'];
-	faildP = autoBetPattern['faild'];
-	
-	currentGPattern = winnPattern().slice(0, 4)
-	for(let w=0; w<winP.length; w++){
-		win = winP[w].slice(1, winP[w].length);
-		if(currentGPattern.toString() == win.toString()){
-			
-			betsList.innerHTML += `Winn Pattern Found : ${win}`
+	pattern12 = []
+	function globalListTo12Pattern(){
+		for(let x=0;x<globalList.length; x++){
+			if(parseInt(globalList[x]) < 2){
+				pattern12.push(1)
+			}else{
+				pattern12.push(2)
+			}
 		}
 	}
+	globalListTo12Pattern()
+	
+	
+	
+	for(let x=0; x<betPatternWinn.length; x++){
+		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
+			betsList.innerHTML += `<b style="color:yellow"> Bet Pattern Found ${x} -> ${betPatternWinn[x].toString()}</b>`
+		}
+		
+	}
+
+	for(let x=0; x<betPatternWinnWaring.length; x++){
+		if(betPatternWinnWaring[x].toString() == pattern12.slice(0, betPatternWinnWaring[x].length).toString()){
+			betsList.innerHTML += `<b style="color:red"> Don't Bet Pattern Found ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
+		}
+		
+	}
+	
+	
+	return false
+	
+	//setup rain for bet
+	document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
+	document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
+	let rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
+	for(let x=0; x<rain_list.length; x++){
+		//await new Promise(resolve => setTimeout(resolve, 1000));
+		rain_list[x].getElementsByClassName('radio ng-star-inserted')[0].click()
+	}
+	
+	document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
+	
+	//check free-bet-wrapper ng-star-inserted is pop updateCommands
+	popUpFreeBet = document.getElementsByClassName("free-bet-wrapper ng-star-inserted")[0]
+	if(popUpFreeBet){
+		betsList.innerHTML += `Yes `
+		let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
+		
+	}
+
 }
+
+
 function lastProcess(){
 	console.clear()
 	const betsList = document.querySelector(".bets-list");
@@ -99,6 +140,19 @@ function lastProcess(){
 		Faild = <b style="color:red">${last13resultFaild}</b> <b style="color:gray">${faildp.slice(3, 6)}</b> <b style="color:gray">${faildp.slice(7, 10)}<br>
 		
 	</div>`
+
+	
+	if(last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
+		if(last13resultFaild[2] > last13resultFaild[1]){
+			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
+		}
+	}
+	
+	if(globalList[0] > 1.99 & last13resultWinn[0]-1 == last13resultFaild[0] & last13resultWinn[1] == last13resultFaild[2] & last13resultWinn[2] == last13resultFaild[1]){
+		betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 3</b>'
+	}
+	
+	
 	betsList.innerHTML += stringHtml
 	
 	autoBetPatternFinder()
@@ -226,11 +280,13 @@ function rainCollect() {
         if (!claimList) return;
 
         [...claimList.children].forEach(child => {
-            [...child.children].forEach((btn, idx) => {
-                if (idx > 0) {
-                    try { btn.click(); } catch (e) { }
-                }
-            });
+			try{
+				[...child.children].forEach((btn, idx) => {
+					if (idx > 0) {
+						try { btn.click(); } catch (e) { }
+					}
+				});
+			}catch(e){}
         });
     } catch (e) {
         // Optional: log errors to console or UI
