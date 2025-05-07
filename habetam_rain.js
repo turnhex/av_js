@@ -7,19 +7,22 @@
 let globalList = []
 
 let betPatternWinn = [
+	
 	[2,2,1,1,1,1,1],
 	[2,1,2,1,1,2,2,2],
 	[2,2,1,1,2,1,1,2,],
-	
+	[1,2,1,1,1,1,2,1,1],
+
 ]
 
 let betPatternWinnWaring = [
 	[1,1,2,1,1],
 	[1,1,2],
 	[2,1,1,1,1,2],
-	[2,1,2,2,2,2,1]
-]
+	[2,1,2,2,2,2,1],
+	[2,2,1,1,1,2,2,1,1]
 
+]
 
 function winnPattern(){
 	let count = 0
@@ -72,7 +75,60 @@ function autoBetPatternFinder(){
 	}
 	globalListTo12Pattern()
 	
+	let rNumber = []
+	function patternReadEsy(){
+		
+		let r = '<br>'
+		let countW = 0
+		let countF = 0
+		
+		let  countAnyP = 0
+		for(let x=0; x<pattern12.length; x++){
+			if(pattern12[x] == 2){
+				countW += 1
+				
+				if(countF > 0){
+					r += `<b style="color:red">${countF}</b> `
+					rNumber.push(countF)
+					countAnyP+=1
+				}
+				countF = 0
+			}else{
+				if(countW > 0){
+					r += `<b style="color:green">${countW}</b> `
+					countAnyP+=1
+					rNumber.push(countW)
+					
+				}
+				countW = 0
+				countF += 1
+			}
+			
+			if(countAnyP > 15){
+				break
+			}
+		}
+
+
+		betsList.innerHTML += `<div> ${r}</div>`
+	}
 	
+	patternReadEsy()
+	
+	color = 'gree'
+	if(globalList[0] < 2 )
+		color ='red'
+	
+	
+	betsList.innerHTML += `<p>${rNumber.slice(0,2)} - ${rNumber.slice(2,4)} - ${rNumber.slice(4,6)} - ${rNumber.slice(6,8)} - ${rNumber.slice(8,10)} - ${rNumber.slice(10,12)}  - ${rNumber.slice(12,14)} - ${rNumber.slice(14,17)}</p> `
+	
+	if(rNumber.slice(0,2).reverse.toString() == rNumber.slice(4,6).toString()){
+		betsList.innerHTML += `<p style="color:red">dont try !<p>`
+		
+	}
+	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5]){
+		betsList.innerHTML += `<b style="color:yellow">Similare Pattern is happing Bet</b> `
+	}
 	//betsList.innerHTML += `<b style="color:yellow"> ${pattern12}</b>`
 	for(let x=0; x<betPatternWinn.length; x++){
 		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
@@ -108,7 +164,23 @@ function autoBetPatternFinder(){
 		let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
 		
 	}
+	
+	//try to enable cash out 
+	/*
+		if auto cash out is enable class name "input-switch off" dont exist 
+	*/
+	try{
+		document.getElementsByClassName("cashout-block")[0].getElementsByClassName("input-switch off")[0].click()
+		
+	}catch(e){
+		
+	}
 
+	try{
+		document.getElementsByClassName("cashout-block")[1].getElementsByClassName("input-switch off")[0].click()
+	}catch(e){
+		
+	}
 }
 
 function lastProcess(){
@@ -142,20 +214,18 @@ function lastProcess(){
 	</div>`
 
 	
-	if(last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
-		if(last13resultFaild[2] > last13resultFaild[1]){
-			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
-		}
-	}
-	
-	if(globalList[0] > 1.99 & last13resultWinn[0]-1 == last13resultFaild[0] & last13resultWinn[1] == last13resultFaild[2] & last13resultWinn[2] == last13resultFaild[1]){
-		betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 3</b>'
-	}
 	
 	
 	betsList.innerHTML += stringHtml
 	
 	autoBetPatternFinder()
+
+	if(globalList[0] < 2 & last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
+		if(last13resultFaild[2] > last13resultFaild[1]){
+			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
+		}
+	}
+	
 }
 
 // Select the target node
