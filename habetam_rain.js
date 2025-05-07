@@ -1,3 +1,113 @@
+let globalList = []
+	
+let autoBetPattern = {
+	'win':[
+		
+	],
+	'faild':[
+		['winn', 1,2,3]
+	]
+}
+
+
+function winnPattern(){
+	let count = 0
+	let pattern = []
+	
+	for(let x=0; x<globalList.length; x++){
+		if(globalList[x] > 1.99){
+			count += 1
+		}else{
+			if(count > 0){
+				pattern.push(count)
+			}
+			count = 0
+		}
+	}
+	
+	return pattern
+}
+
+function faildPattern(){
+	let count = 0
+	let pattern = []
+	
+	for(let x=0; x<globalList.length; x++){
+		if(globalList[x] < 2){
+			count += 1
+		}else{
+			if(count > 0){
+				pattern.push(count)
+			}
+			count = 0
+		}
+	}
+	
+	return pattern
+}
+
+function lastProcess(){
+	console.clear()
+	const betsList = document.querySelector(".bets-list");
+	
+    if (betsList) {
+        betsList.innerHTML = `<b style="font-size:18px;"> -- Extract Rain & Game Result-- ${countRefresh} </b>`;
+    }
+	
+	let payout = document.querySelector('.payouts-block').getElementsByClassName("payout")
+	let result = []
+	for(let x=0; x<payout.length; x++){
+		result.push(parseFloat(payout[x].innerText.replace('x','')))
+	}
+	globalList = result
+	
+	let winnp  = winnPattern()
+	let faildp = faildPattern()
+	
+	betsList.innerHTML += String(winnp)
+	
+	last13resultWinn = winnp.slice(0, 3)
+	last13resultFaild = faildp.slice(0, 3)
+	
+	stringHtml = `<div>
+		Winn = <b style="color:green">${last13resultWinn}</b> <b style="color:gray">${winnp.slice(3, 6)}</b><br>
+		Faild = <b style="color:red">${last13resultFaild}</b> <b style="color:gray">${faildp.slice(3, 6)}<br>
+		
+	</div>`
+	betsList.innerHTML += stringHtml
+}
+
+// Select the target node
+const targetNodeResult = document.querySelector('.payouts-block');
+
+// Check if the element exists
+if (targetNodeResult) {
+  // Create a callback function to execute when mutations are observed
+  const callback = function(mutationsList, observer) {
+    lastProcess()
+  };
+
+  // Create an observer instance linked to the callback function
+  const observerResult = new MutationObserver(callback);
+
+  // Set observer options
+  const configResult = {
+    attributes: false,      // Watch for attribute changes
+    childList: true,       // Watch for additions or removals of child elements
+    subtree: false,         // Watch the entire subtree
+    characterData: false    // Watch for text content changes
+  };
+
+  // Start observing the target node
+  observerResult.observe(targetNodeResult, configResult);
+
+  console.log('Observer is now watching .payouts-block');
+} else {
+  console.error('Element with class "payouts-block" not found.');
+}
+
+
+
 let mode = 1;
 
 function betMode() {
@@ -59,16 +169,19 @@ function youtubeMode(show = false) {
     }
 }
 
-betMode()
-youtubeMode();
+//betMode()
+//youtubeMode();
 
 let countRefresh = 0;
 function rainCollect() {
+	
     const betsList = document.querySelector(".bets-list");
+	/*
     if (betsList) {
         betsList.innerHTML = `<b style="font-size:18px;"> -- Extract Rain From Chat -- ${countRefresh} </b>`;
-    }
-
+    }*/
+	
+	
     countRefresh += 0.5;
 
     const mainChat = document.querySelector(".chat-bar.ng-star-inserted");
@@ -98,11 +211,11 @@ function rainCollect() {
 }
 
 // Throttle the callback to avoid over-execution
-let lastRun = 0;
-const callback = (mutationsList, observer) => {
+let lastRunRain = 0;
+const callbackRain = (mutationsList, observer) => {
     const now = Date.now();
-    if (now - lastRun < 500) return; // Run at most every 500ms
-    lastRun = now;
+    if (now - lastRunRain < 500) return; // Run at most every 500ms
+    lastRunRain = now;
 
     rainCollect();
 
@@ -113,10 +226,10 @@ const callback = (mutationsList, observer) => {
     } catch (e) {}
 };
 
-const targetNode = document.querySelector('.messages-container');
-if (targetNode) {
-    const observer = new MutationObserver(callback);
-    observer.observe(targetNode, { childList: true });
+const targetNodeRain = document.querySelector('.messages-container');
+if (targetNodeRain) {
+    const observerRain = new MutationObserver(callbackRain);
+    observerRain.observe(targetNodeRain, { childList: true });
 } else {
     console.log("No element with class 'messages-container' found.");
 }
