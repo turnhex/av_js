@@ -110,25 +110,36 @@ function autoBetPatternFinder(){
 		}
 
 
-		betsList.innerHTML += `<div> ${r}</div>`
+		//betsList.innerHTML += `<div> ${r}</div>`
 	}
 	
 	patternReadEsy()
 	
-	color = 'gree'
+	let color = 'green'
 	if(globalList[0] < 2 )
 		color ='red'
 	
 	
-	betsList.innerHTML += `<p>${rNumber.slice(0,2)} - ${rNumber.slice(2,4)} - ${rNumber.slice(4,6)} - ${rNumber.slice(6,8)} - ${rNumber.slice(8,10)} - ${rNumber.slice(10,12)}  - ${rNumber.slice(12,14)} - ${rNumber.slice(14,17)}</p> `
+	//betsList.innerHTML += `<p>${rNumber.slice(0,2)} - ${rNumber.slice(2,4)} - ${rNumber.slice(4,6)} - ${rNumber.slice(6,8)} - ${rNumber.slice(8,10)} - ${rNumber.slice(10,12)}  - ${rNumber.slice(12,14)} - ${rNumber.slice(14,17)}</p> `
 	
 	if(rNumber.slice(0,2).reverse.toString() == rNumber.slice(4,6).toString()){
 		betsList.innerHTML += `<p style="color:red">dont try !<p>`
 		
 	}
+	
+	s = ''
+	for(let x=0; x<rNumber.length; x+=2){
+		s += `<b style="color:${color}">${rNumber[x]}</b>,<b>${rNumber[x+1]} -- </b>`
+	}
+	betsList.innerHTML += `<div>${s}</div>`
+	
 	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5]){
 		betsList.innerHTML += `<b style="color:yellow">Similare Pattern is happing Bet</b> `
 	}
+	
+
+	
+	
 	//betsList.innerHTML += `<b style="color:yellow"> ${pattern12}</b>`
 	for(let x=0; x<betPatternWinn.length; x++){
 		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
@@ -139,7 +150,7 @@ function autoBetPatternFinder(){
 
 	for(let x=0; x<betPatternWinnWaring.length; x++){
 		if(betPatternWinnWaring[x].toString() == pattern12.slice(0, betPatternWinnWaring[x].length).toString()){
-			betsList.innerHTML += `<b style="color:red"> Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
+			betsList.innerHTML += `<b > Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
 		}
 	}
 	
@@ -184,6 +195,7 @@ function autoBetPatternFinder(){
 }
 
 function lastProcess(){
+	
 	console.clear()
 	const betsList = document.querySelector(".bets-list");
 	
@@ -213,9 +225,7 @@ function lastProcess(){
 		
 	</div>`
 
-	
-	
-	
+
 	betsList.innerHTML += stringHtml
 	
 	autoBetPatternFinder()
