@@ -4,18 +4,20 @@
 //document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
 //rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
 
-
-
 let globalList = []
 
 let betPatternWinn = [
-[2,2,1,1,1,1,1],
-[2,1,2,1,1,2,2,2],
-
-]
-let betPatternWinnWaring = [
-	[2,1,1,3],
+	[2,2,1,1,1,1,1],
+	[2,1,2,1,1,2,2,2],
+	[2,2,1,1,2,1,1,2,],
 	
+]
+
+let betPatternWinnWaring = [
+	[1,1,2,1,1],
+	[1,1,2],
+	[2,1,1,1,1,2],
+	[2,1,2,2,2,2,1]
 ]
 
 
@@ -71,19 +73,18 @@ function autoBetPatternFinder(){
 	globalListTo12Pattern()
 	
 	
-	
+	//betsList.innerHTML += `<b style="color:yellow"> ${pattern12}</b>`
 	for(let x=0; x<betPatternWinn.length; x++){
 		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
-			betsList.innerHTML += `<b style="color:yellow"> Bet Pattern Found ${x} -> ${betPatternWinn[x].toString()}</b>`
+			betsList.innerHTML += `<b style="color:yellow"> Bet Pattern ${x} -> ${betPatternWinn[x].toString()}</b>`
 		}
 		
 	}
 
 	for(let x=0; x<betPatternWinnWaring.length; x++){
 		if(betPatternWinnWaring[x].toString() == pattern12.slice(0, betPatternWinnWaring[x].length).toString()){
-			betsList.innerHTML += `<b style="color:red"> Don't Bet Pattern Found ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
+			betsList.innerHTML += `<b style="color:red"> Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
 		}
-		
 	}
 	
 	
@@ -109,7 +110,6 @@ function autoBetPatternFinder(){
 	}
 
 }
-
 
 function lastProcess(){
 	console.clear()
