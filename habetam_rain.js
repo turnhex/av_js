@@ -173,25 +173,29 @@ async function autoBetPatternFinder(){
 	}
 	
 	
-	
+	try{
 	//setup rain for bet
-	document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
-	document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
-	let rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
-	for(let x=0; x<rain_list.length; x++){
-		//await new Promise(resolve => setTimeout(resolve, 1000));
-		rain_list[x].getElementsByClassName('radio ng-star-inserted')[0].click()
-	}
+		document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
+		document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
+		let rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
+		for(let x=0; x<rain_list.length; x++){
+			//await new Promise(resolve => setTimeout(resolve, 1000));
+			rain_list[x].getElementsByClassName('radio ng-star-inserted')[0].click()
+		}
+	}catch(e){}
 	
 	document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
-	
-	//check free-bet-wrapper ng-star-inserted is pop updateCommands
-	popUpFreeBet = document.getElementsByClassName("free-bet-wrapper ng-star-inserted")[0]
-	if(popUpFreeBet){
-		betsList.innerHTML += `<b>Free bet found</b>`
-		let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
 		
-	}
+	try{
+		//check free-bet-wrapper ng-star-inserted is pop updateCommands
+		popUpFreeBet = document.getElementsByClassName("free-bet-wrapper ng-star-inserted")[0]
+		if(popUpFreeBet){
+			betsList.innerHTML += `<b>Free bet found</b>`
+			let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
+			
+		}
+	}catch(e){}
+
 	//try to close rain list
 	await new Promise(resolve => setTimeout(resolve, 1000));
 	try{
@@ -443,7 +447,9 @@ function observeCashOut(button) {
 		let betAcmount2 = parseFloat(document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
 		
 		let betAcmount = betAcmount1 > betAcmount2 ? betAcmount2 : betAcmount1
-		const cashOutAmountPersentage = (((betAcmount*2)/100)*90)
+		//const cashOutAmountPersentage = (((betAcmount*2)/100)*90)
+		const cashOutAmountPersentage = (((betAcmount)/100)*90)
+		
 		const betsList = document.querySelector(".missions-container");
 		betsList.innerHTML = '<div class="cashoutFromButton">CashOut</div>'
 		const cashoutTag = betsList.getElementsByClassName("cashoutFromButton")[0]
