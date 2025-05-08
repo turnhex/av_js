@@ -426,3 +426,72 @@ if (targetNodeRain) {
 } else {
     console.log("No element with class 'messages-container' found.");
 }
+
+
+/*
+
+	-- Auto Cash Out MutationObserver -- 
+*/
+
+// Function to observe amount changes
+function observeCashOut(button) {
+  const amountLabel = button.querySelector('.amount');
+  if (!amountLabel) return;
+
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+		let betAcmount1 = parseFloat(document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
+		let betAcmount2 = parseFloat(document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
+		
+		let betAcmount = betAcmount1 > betAcmount2 ? betAcmount2 : betAcmount1
+		const cashOutAmountPersentage = (((betAcmount*2)/100)*90)
+		const betsList = document.querySelector(".missions-container");
+		betsList.innerHTML = '<div class="cashoutFromButton">CashOut</div>'
+		const cashoutTag = betsList.getElementsByClassName("cashoutFromButton")[0]
+		
+		cashoutTag.innerHTML = `<p style="color:white">Amount changed to:, ${amountLabel.innerText.trim()}<p>`
+		
+		
+	  
+		  if(parseFloat(amountLabel.innerText.trim()) >= cashOutAmountPersentage){
+			let clickCashOut = document.getElementsByClassName('btn btn-warning cashout ng-star-inserted')
+			for(let x=0; x<clickCashOut.length; x++){
+				clickCashOut[x].click()
+			}
+		  }
+    });
+  });
+
+  observer.observe(amountLabel, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  console.log('Now observing amount changes for:', amountLabel.innerText.trim());
+}
+
+// Observe DOM for the button appearing
+const domObserverCashOut = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (
+        node.nodeType === 1 &&
+        node.classList.contains('btn') &&
+        node.classList.contains('btn-warning') &&
+        node.classList.contains('cashout') &&
+        node.classList.contains('ng-star-inserted')
+      ) {
+        console.log('Cash Out button detected.');
+        observeCashOut(node);
+      }
+    });
+  });
+});
+
+domObserverCashOut.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
+
