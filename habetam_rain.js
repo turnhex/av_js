@@ -1,10 +1,3 @@
-
-//cash out button =  document.getElementsByClassName("btn btn-warning cashout ng-star-inserted")[1].click()
-
-//document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
-//document.getElementsByClassName("dropdown-item list-menu-item info-item ng-star-inserted")[0].click()
-//rain_list = document.getElementsByClassName("content__free-bets ng-star-inserted")[0].getElementsByClassName("free-bets-list-wrapper")
-
 let globalList = []
 
 let betPatternWinn = [
@@ -148,6 +141,9 @@ async function autoBetPatternFinder(){
 	
 	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5] & rNumber[3] > 1 & rNumber[5] > 1){
 		betsList.innerHTML += `<b style="color:yellow">Similare Pattern is happing Bet</b> `
+		
+		document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
+			
 	}
 	
 	
@@ -163,6 +159,11 @@ async function autoBetPatternFinder(){
 		if(last13resultFaild[2] > last13resultFaild[1]){
 			document.getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
 			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
+			
+			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
+			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[1].click()
+			
+		
 		}
 	}
 	
@@ -203,6 +204,17 @@ async function autoBetPatternFinder(){
 	}catch(e){
 		
 	}
+	
+	//set bet Amount
+	let persent3betAmount = (((parseFloat(document.getElementsByClassName("balance-amount")[0].innerText))/100)*35)/2
+		
+		
+	document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
+	document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
+		
+	document.getElementsByClassName("controls-content-top")[0].click()
+		
+		
 	
 	//change the mode to 'Auto' mode view 
 	
@@ -297,6 +309,76 @@ if (targetNodeResult) {
 } else {
   console.error('Element with class "payouts-block" not found.');
 }
+
+
+/*
+
+	-- Auto Cash Out MutationObserver -- 
+*/
+
+// Function to observe amount changes
+function observeCashOut(button) {
+  const amountLabel = button.querySelector('.amount');
+  if (!amountLabel) return;
+
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+		let betAcmount1 = parseFloat(document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
+		let betAcmount2 = parseFloat(document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
+		
+		let betAcmount = betAcmount1 > betAcmount2 ? betAcmount2 : betAcmount1
+		//const cashOutAmountPersentage = (((betAcmount*2)/100)*95)
+		const cashOutAmountPersentage = (((betAcmount)/100)*90)
+		
+		
+		const betsList = document.querySelector(".missions-container");
+		betsList.innerHTML = '<div class="cashoutFromButton">CashOut</div>'
+		const cashoutTag = betsList.getElementsByClassName("cashoutFromButton")[0]
+		
+		cashoutTag.innerHTML = `<p style="color:white">Amount changed to:, ${amountLabel.innerText.trim()}<p>`
+		
+		
+	  
+		  if(parseFloat(amountLabel.innerText.trim()) >= cashOutAmountPersentage){
+			let clickCashOut = document.getElementsByClassName('btn btn-warning cashout ng-star-inserted')
+			for(let x=0; x<clickCashOut.length; x++){
+				clickCashOut[x].click()
+			}
+		  }
+    });
+  });
+
+  observer.observe(amountLabel, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  console.log('Now observing amount changes for:', amountLabel.innerText.trim());
+}
+
+// Observe DOM for the button appearing
+const domObserverCashOut = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (
+        node.nodeType === 1 &&
+        node.classList.contains('btn') &&
+        node.classList.contains('btn-warning') &&
+        node.classList.contains('cashout') &&
+        node.classList.contains('ng-star-inserted')
+      ) {
+        console.log('Cash Out button detected.');
+        observeCashOut(node);
+      }
+    });
+  });
+});
+
+domObserverCashOut.observe(document.body, {
+  childList: true,
+  subtree: true
+});
 
 
 /*
@@ -431,72 +513,5 @@ if (targetNodeRain) {
 }
 
 
-/*
-
-	-- Auto Cash Out MutationObserver -- 
-*/
-
-// Function to observe amount changes
-function observeCashOut(button) {
-  const amountLabel = button.querySelector('.amount');
-  if (!amountLabel) return;
-
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-		let betAcmount1 = parseFloat(document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
-		let betAcmount2 = parseFloat(document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
-		
-		let betAcmount = betAcmount1 > betAcmount2 ? betAcmount2 : betAcmount1
-		//const cashOutAmountPersentage = (((betAcmount*2)/100)*90)
-		const cashOutAmountPersentage = (((betAcmount)/100)*90)
-		
-		const betsList = document.querySelector(".missions-container");
-		betsList.innerHTML = '<div class="cashoutFromButton">CashOut</div>'
-		const cashoutTag = betsList.getElementsByClassName("cashoutFromButton")[0]
-		
-		cashoutTag.innerHTML = `<p style="color:white">Amount changed to:, ${amountLabel.innerText.trim()}<p>`
-		
-		
-	  
-		  if(parseFloat(amountLabel.innerText.trim()) >= cashOutAmountPersentage){
-			let clickCashOut = document.getElementsByClassName('btn btn-warning cashout ng-star-inserted')
-			for(let x=0; x<clickCashOut.length; x++){
-				clickCashOut[x].click()
-			}
-		  }
-    });
-  });
-
-  observer.observe(amountLabel, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  });
-
-  console.log('Now observing amount changes for:', amountLabel.innerText.trim());
-}
-
-// Observe DOM for the button appearing
-const domObserverCashOut = new MutationObserver(mutations => {
-  mutations.forEach(mutation => {
-    mutation.addedNodes.forEach(node => {
-      if (
-        node.nodeType === 1 &&
-        node.classList.contains('btn') &&
-        node.classList.contains('btn-warning') &&
-        node.classList.contains('cashout') &&
-        node.classList.contains('ng-star-inserted')
-      ) {
-        console.log('Cash Out button detected.');
-        observeCashOut(node);
-      }
-    });
-  });
-});
-
-domObserverCashOut.observe(document.body, {
-  childList: true,
-  subtree: true
-});
 
 
