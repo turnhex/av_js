@@ -136,6 +136,7 @@ async function autoBetPatternFinder(){
 	for(let x=0; x<rNumber.length; x+=2){
 		s += `<b style="color:${color}">${rNumber[x]}</b>,<b>${rNumber[x+1]} -- </b>`
 	}
+	
 	betsList.innerHTML += `<div>${s}</div><br>`
 	//betsList.innerHTML += `<div>r is ${rNumber}</div>`
 	
@@ -151,6 +152,8 @@ async function autoBetPatternFinder(){
 	for(let x=0; x<betPatternWinn.length; x++){
 		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
 			betsList.innerHTML += `<b style="color:yellow"> Bet Pattern ${x} -> ${betPatternWinn[x].toString()}</b>`
+			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
+			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[1].click()
 		}
 		
 	}
@@ -172,6 +175,10 @@ async function autoBetPatternFinder(){
 			betsList.innerHTML += `<b > Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
 		}
 	}
+	if(rNumber[3] == 3){
+		betsList.innerHTML += `<b > Don't Bet After Larg 3 </b>`
+	}
+	
 	
 	
 	try{
@@ -206,13 +213,13 @@ async function autoBetPatternFinder(){
 	}
 	
 	//set bet Amount
-	let persent3betAmount = (((parseFloat(document.getElementsByClassName("balance-amount")[0].innerText))/100)*35)/2
+	//let persent3betAmount = (((parseFloat(document.getElementsByClassName("balance-amount")[0].innerText))/100)*35)/2
 		
 		
-	document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
-	document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
+	//document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
+	//document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value = persent3betAmount
 		
-	document.getElementsByClassName("controls-content-top")[0].click()
+	//document.getElementsByClassName("controls-content-top")[0].click()
 		
 		
 	
@@ -323,6 +330,7 @@ function observeCashOut(button) {
 
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
+		
 		let betAcmount1 = parseFloat(document.getElementsByClassName("controls-content-top")[0].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
 		let betAcmount2 = parseFloat(document.getElementsByClassName("controls-content-top")[1].getElementsByClassName("spinner big")[0].getElementsByTagName("input")[0].value)
 		
@@ -450,7 +458,7 @@ function youtubeMode(show = false) {
 let countRefresh = 0;
 function rainCollect() {
 	
-    const betsList = document.querySelector(".bets-list");
+    const betsList = document.querySelector(".bets-widget-footer");
 	/*
     if (betsList) {
         betsList.innerHTML = `<b style="font-size:18px;"> -- Extract Rain From Chat -- ${countRefresh} </b>`;
@@ -467,7 +475,7 @@ function rainCollect() {
         const latestContainer = rainContainers[rainContainers.length - 1];
 
         if (betsList) {
-            betsList.innerHTML += `<pre style="color:green">[+] rain_containers size <b style="color:white">${rainContainers.length}</b></pre>`;
+            betsList.innerHTML = `<pre style="color:green">[+] rain_containers size <b style="color:white">${rainContainers.length}</b></pre>`;
         }
 
         const claimList = latestContainer.querySelector(".claim-wrapper");
@@ -502,6 +510,7 @@ const callbackRain = (mutationsList, observer) => {
         controls[0]?.querySelector(".buttons-block")?.firstChild?.setAttribute("style", "color:gray; background-color:black; font-size:15px");
         controls[2]?.querySelector(".buttons-block")?.firstChild?.setAttribute("style", "color:gray; background-color:black; font-size:15px");
     } catch (e) {}
+	rainCollect()
 };
 
 const targetNodeRain = document.querySelector('.messages-container');
