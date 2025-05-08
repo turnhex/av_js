@@ -110,8 +110,8 @@ async function autoBetPatternFinder(){
 
 		//betsList.innerHTML += `<div> ${r}</div>`
 	}
-	
 	patternReadEsy()
+	
 	
 	let color = 'green'
 	if(globalList[0] < 2 )
@@ -129,7 +129,7 @@ async function autoBetPatternFinder(){
 	for(let x=0; x<rNumber.length; x+=2){
 		s += `<b style="color:${color}">${rNumber[x]}</b>,<b>${rNumber[x+1]} -- </b>`
 	}
-	betsList.innerHTML += `<div>${s}</div>`
+	betsList.innerHTML += `<div>${s}</div><br>`
 	//betsList.innerHTML += `<div>r is ${rNumber}</div>`
 	
 	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5] & rNumber[3] > 1 & rNumber[5] > 1){
@@ -145,6 +145,13 @@ async function autoBetPatternFinder(){
 		
 	}
 
+	if(globalList[0] < 2 & last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
+		if(last13resultFaild[2] > last13resultFaild[1]){
+			document.getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
+			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
+		}
+	}
+	
 	for(let x=0; x<betPatternWinnWaring.length; x++){
 		if(betPatternWinnWaring[x].toString() == pattern12.slice(0, betPatternWinnWaring[x].length).toString()){
 			betsList.innerHTML += `<b > Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
@@ -224,20 +231,14 @@ function lastProcess(){
 	stringHtml = `<div>
 		Winn = <b style="color:green">${last13resultWinn}</b> <b style="color:gray">${winnp.slice(3, 6)}</b> <b style="color:gray">${winnp.slice(7, 10)}</b><br>
 		Faild = <b style="color:red">${last13resultFaild}</b> <b style="color:gray">${faildp.slice(3, 6)}</b> <b style="color:gray">${faildp.slice(7, 10)}<br>
-		
 	</div>`
 
 
 	betsList.innerHTML += stringHtml
 	
+	
 	autoBetPatternFinder()
 
-	if(globalList[0] < 2 & last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
-		if(last13resultFaild[2] > last13resultFaild[1]){
-			document.getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
-			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
-		}
-	}
 	
 }
 
@@ -271,8 +272,9 @@ if (targetNodeResult) {
 }
 
 
-
-let mode = 1;
+/*
+	-- Rain Collector Script Part -- 
+*/
 
 function betMode() {
     const styleCode = 'opacity: 0.2;';
