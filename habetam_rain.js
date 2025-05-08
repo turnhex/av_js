@@ -59,7 +59,21 @@ function faildPattern(){
 }
 
 async function autoBetPatternFinder(){
+
 	const betsList = document.querySelector(".bets-list");
+	
+	await new Promise(resolve => setTimeout(resolve, 1000));
+	//try to calim any free bet if exist
+	try{
+		let ClaimFreeBet = document.getElementsByClassName("free-bet-wrapper ng-star-inserted")[0]
+
+		ClaimFreeBet.getElementsByClassName("btn btn-success btn-continue text-uppercase")[0].click()
+		betsList.innerHTML += `<p style="color:blue">Free Bet calim success .</p>`
+		
+	}catch(e){
+		//betsList.innerHTML += `<p style="color:blue">Free Bet calim not Exist.</p>`
+	}
+	
 	
 	pattern12 = []
 	function globalListTo12Pattern(){
@@ -159,7 +173,6 @@ async function autoBetPatternFinder(){
 	}
 	
 	
-	return false
 	
 	//setup rain for bet
 	document.getElementsByClassName("user-wrapper ng-star-inserted dropdown")[0].getElementsByClassName('burger-i')[0].click() //dropdown-item list-menu-item info-item ng-star-inserted
@@ -175,19 +188,28 @@ async function autoBetPatternFinder(){
 	//check free-bet-wrapper ng-star-inserted is pop updateCommands
 	popUpFreeBet = document.getElementsByClassName("free-bet-wrapper ng-star-inserted")[0]
 	if(popUpFreeBet){
-		betsList.innerHTML += `Yes `
+		betsList.innerHTML += `<b>Free bet found</b>`
 		let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
 		
 	}
-	//change the mode to 'Auto' mode view 
-	document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[1].click()
-	document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[3].click()
+	//try to close rain list
 	await new Promise(resolve => setTimeout(resolve, 1000));
+	try{
+		document.getElementsByClassName("modal-content")[0].getElementsByClassName("close")[0].click()
+	}catch(e){
+		
+	}
+	
+	//change the mode to 'Auto' mode view 
+	
+	//document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[1].click()
+	//document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[3].click()
+	//await new Promise(resolve => setTimeout(resolve, 1000));
 	
 	//try to enable cash out 
 	/*
 		if auto cash out is enable class name "input-switch off" dont exist 
-	*/
+	
 	try{
 		document.getElementsByClassName("cashout-block")[0].getElementsByClassName("input-switch off")[0].click()
 		
@@ -200,6 +222,7 @@ async function autoBetPatternFinder(){
 	}catch(e){
 		
 	}
+	*/
 	
 }
 
@@ -376,31 +399,7 @@ function rainCollect() {
     } catch (e) {
         // Optional: log errors to console or UI
     }
-	    try {
-        const rainContainers = mainChat.querySelectorAll(".rain-wrapper.mb-2.ng-star-inserted");
-        const latestContainer = rainContainers[rainContainers.length - 1];
 
-        if (betsList) {
-            betsList.innerHTML += `<pre style="color:green">[+] rain_containers size <b style="color:white">${rainContainers.length}</b></pre>`;
-        }
-
-        const claimList = latestContainer.querySelector(".claim-wrapper");
-        if (!claimList) return;
-
-        [...claimList.children].forEach(child => {
-			try{
-				[...child.children].forEach((btn, idx) => {
-					if (idx > 0) {
-						try { btn.click(); } catch (e) { }
-					}
-				});
-			}catch(e){}
-        });
-    } catch (e) {
-        // Optional: log errors to console or UI
-    }
-	
-	
 }
 
 // Throttle the callback to avoid over-execution
