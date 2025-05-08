@@ -58,7 +58,7 @@ function faildPattern(){
 	return pattern
 }
 
-function autoBetPatternFinder(){
+async function autoBetPatternFinder(){
 	const betsList = document.querySelector(".bets-list");
 	
 	pattern12 = []
@@ -130,12 +130,11 @@ function autoBetPatternFinder(){
 		s += `<b style="color:${color}">${rNumber[x]}</b>,<b>${rNumber[x+1]} -- </b>`
 	}
 	betsList.innerHTML += `<div>${s}</div>`
+	//betsList.innerHTML += `<div>r is ${rNumber}</div>`
 	
-	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5]){
+	if(rNumber[0] < rNumber[1] & rNumber[2] == rNumber[3] & rNumber[4] == rNumber[5] & rNumber[3] > 1 & rNumber[5] > 1){
 		betsList.innerHTML += `<b style="color:yellow">Similare Pattern is happing Bet</b> `
 	}
-	
-
 	
 	
 	//betsList.innerHTML += `<b style="color:yellow"> ${pattern12}</b>`
@@ -173,6 +172,10 @@ function autoBetPatternFinder(){
 		let value = parseInt(popUpFreeBet.getElementsByClassName("win")[0].getElementsByClassName('value')[0].innerText)
 		
 	}
+	//change the mode to 'Auto' mode view 
+	document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[1].click()
+	document.getElementsByClassName('bet-controls')[0].getElementsByClassName("tab ng-star-inserted")[3].click()
+	await new Promise(resolve => setTimeout(resolve, 1000));
 	
 	//try to enable cash out 
 	/*
@@ -190,11 +193,12 @@ function autoBetPatternFinder(){
 	}catch(e){
 		
 	}
+	
 }
 
 function lastProcess(){
 	
-	console.clear()
+	//console.clear()
 	const betsList = document.querySelector(".bets-list");
 	
     if (betsList) {
@@ -230,6 +234,7 @@ function lastProcess(){
 
 	if(globalList[0] < 2 & last13resultFaild[0] > last13resultWinn[1] & last13resultFaild[0] >  last13resultFaild[2]){
 		if(last13resultFaild[2] > last13resultFaild[1]){
+			document.getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
 			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
 		}
 	}
@@ -369,6 +374,31 @@ function rainCollect() {
     } catch (e) {
         // Optional: log errors to console or UI
     }
+	    try {
+        const rainContainers = mainChat.querySelectorAll(".rain-wrapper.mb-2.ng-star-inserted");
+        const latestContainer = rainContainers[rainContainers.length - 1];
+
+        if (betsList) {
+            betsList.innerHTML += `<pre style="color:green">[+] rain_containers size <b style="color:white">${rainContainers.length}</b></pre>`;
+        }
+
+        const claimList = latestContainer.querySelector(".claim-wrapper");
+        if (!claimList) return;
+
+        [...claimList.children].forEach(child => {
+			try{
+				[...child.children].forEach((btn, idx) => {
+					if (idx > 0) {
+						try { btn.click(); } catch (e) { }
+					}
+				});
+			}catch(e){}
+        });
+    } catch (e) {
+        // Optional: log errors to console or UI
+    }
+	
+	
 }
 
 // Throttle the callback to avoid over-execution
