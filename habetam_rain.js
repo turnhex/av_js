@@ -2,7 +2,9 @@ let globalList = []
 
 let betPatternWinn = [
 	
-	[2,2,1,2,1,2,2]
+	[2,2,1,2,1,2,2],
+	
+	[2,1,2,1,2,1,1,2]
 
 ]
 
@@ -153,7 +155,7 @@ async function autoBetPatternFinder(){
 		if(betPatternWinn[x].toString() == pattern12.slice(0, betPatternWinn[x].length).toString()){
 			betsList.innerHTML += `<b style="color:yellow"> Bet Pattern ${x} -> ${betPatternWinn[x].toString()}</b>`
 			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
-			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[1].click()
+			document.getElementsByClassName("controls")[2].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
 		}
 		
 	}
@@ -164,7 +166,7 @@ async function autoBetPatternFinder(){
 			betsList.innerHTML += '<b style="color:yellow">Try Know Pattern Test 2</b>'
 			
 			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
-			document.getElementsByClassName("controls")[0].getElementsByClassName("btn btn-success bet ng-star-inserted")[1].click()
+			document.getElementsByClassName("controls")[2].getElementsByClassName("btn btn-success bet ng-star-inserted")[0].click()
 			
 		
 		}
@@ -175,8 +177,8 @@ async function autoBetPatternFinder(){
 			betsList.innerHTML += `<b > Don't Bet Pattern  ${x} -> ${betPatternWinnWaring[x].toString()}</b>`
 		}
 	}
-	if(rNumber[3] == 3){
-		betsList.innerHTML += `<b > Don't Bet After Larg 3 </b>`
+	if(rNumber[2] == 3){
+		betsList.innerHTML += `<b style="color:red"> Don't Bet After Larg 3 </b>`
 	}
 	
 	
@@ -316,7 +318,6 @@ if (targetNodeResult) {
 } else {
   console.error('Element with class "payouts-block" not found.');
 }
-
 
 /*
 
@@ -464,7 +465,6 @@ function rainCollect() {
         betsList.innerHTML = `<b style="font-size:18px;"> -- Extract Rain From Chat -- ${countRefresh} </b>`;
     }*/
 	
-	
     countRefresh += 0.5;
 
     const mainChat = document.querySelector(".chat-bar.ng-star-inserted");
@@ -510,7 +510,7 @@ const callbackRain = (mutationsList, observer) => {
         controls[0]?.querySelector(".buttons-block")?.firstChild?.setAttribute("style", "color:gray; background-color:black; font-size:15px");
         controls[2]?.querySelector(".buttons-block")?.firstChild?.setAttribute("style", "color:gray; background-color:black; font-size:15px");
     } catch (e) {}
-	rainCollect()
+	
 };
 
 const targetNodeRain = document.querySelector('.messages-container');
