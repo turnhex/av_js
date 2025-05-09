@@ -1,12 +1,12 @@
+
+//https://habtam.bet/unique-link/7OdkDL7g4jgVHz2d082a
+
 let globalList = []
 
 let betPatternWinn = [
-	
-	[2,2,1,2,1,2,2],
-	
-	[2,1,2,1,2,1,1,2]
-
+	[2,2,1,2,1,2,2]
 ]
+
 
 let betPatternWinnWaring = [
 	[1,1,2,1,1],
@@ -520,7 +520,3 @@ if (targetNodeRain) {
 } else {
     console.log("No element with class 'messages-container' found.");
 }
-
-
-
-
