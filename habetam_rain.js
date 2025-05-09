@@ -419,42 +419,15 @@ function betMode() {
 }
 
 function youtubeMode(show = false) {
-    const styleCode = 'visibility: hidden;';
-    
-    const balance = document.querySelector(".balance-amount")?.innerHTML;
-    const headerLeft = document.querySelector(".main-header .header-left");
-    if (headerLeft) headerLeft.innerHTML = '<b style="color:red; font-size:30px">YoutTube</b>';
-
-    const selectors = [
-        ".missions-holder.ng-star-inserted",
-        ".navigation-switcher.ng-untouched.ng-valid.ng-dirty",
-        "app-chat-widget .header",
-        ".d-flex.h-100.flex-column.ng-star-inserted .ng-star-inserted",
-        ".game-play",
-        ".bet-controls",
-        ".controls",
-        ".bets-footer"
-    ];
-
-    selectors.forEach(sel => {
-        const el = document.querySelector(sel);
-        if (el) el.style = styleCode;
-    });
-
-    if(show){
-        
-            selectors.forEach(sel => {
-            const el = document.querySelector(sel);
-            if (el) el.style = 'visibility: show;';
-        });
-        document.querySelector(".chat-bar.ng-star-inserted").style = 'opacity: 1;'
+    if(show)
+       document.getElementsByTagName("app-game")[0].style = 'opacity:0'
     }else{
-        document.querySelector(".chat-bar.ng-star-inserted").style = 'opacity: 0.0;'
+       document.getElementsByTagName("app-game")[0].style = 'opacity:0'
     }
 }
 
 //betMode()
-//youtubeMode();
+youtubeMode();
 
 let countRefresh = 0;
 function rainCollect() {
